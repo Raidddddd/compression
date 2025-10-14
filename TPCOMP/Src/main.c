@@ -15,7 +15,9 @@ int main(void)
 	USART2_Init();
 	SYSTICK_Init();
 
-	//Test
+	//Te
+
+	//st
 	while(1){
 		SYSTICK_Delay(1000);
 		GPIOA->ODR ^= 1<<5;
