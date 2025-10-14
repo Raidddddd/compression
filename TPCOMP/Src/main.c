@@ -17,7 +17,7 @@ int main(void)
 
 	//Te
 
-	//QSd
+
 	//st
 	while(1){
 		SYSTICK_Delay(1000);
