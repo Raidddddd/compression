@@ -83,3 +83,8 @@ void triArbre(struct noeud* arbre[256], uint32_t taille) {
         }
     }
 }
+void creenoeud (struct noeud* arbre[256]){
+
+
+
+}
