@@ -33,7 +33,7 @@ void afficheOccurence (uint32_t tab[256]){
 	for(uint16_t i=0;i<256;i++){
 		if(tab[i]!=0){
 
-		printf("Le nombre d'occurence de char %c = %ld \r\n ",i,tab[i]);
+			printf("Le nombre d'occurence de char %c = %ld \r\n ",i,tab[i]);
 
 		}
 	}
@@ -59,36 +59,27 @@ void creerFeuille(struct noeud *arbre[256], uint32_t tab[256]){
 
 
 
-void AfficherTabArbreHuffman(struct noeud* arbre[256], uint32_t taille)
-{
+void AfficherTabArbreHuffman(struct noeud* arbre[256], uint32_t taille) {
     for (uint16_t i = 0; i < taille; i++) {
-        if (arbre[i] != NULL) {  // Vérifie que le pointeur n'est pas NULL
+        if (arbre[i] != NULL) {  // Vérifie que le pointeur est valide
             printf("Nbre d'occurence du char '%c' = %ld \r\n", (char)arbre[i]->c, arbre[i]->occurence);
         }
     }
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void triArbre(struct noeud* arbre[256], uint32_t taille) {
+    struct noeud *tempp;
+    // Le tri par bulles doit prendre en compte uniquement les éléments valides
+    for (uint32_t i = 0; i < taille - 1; i++) {
+        for (uint32_t j = 0; j < taille - i - 1; j++) {
+            if (arbre[j] != NULL && arbre[j+1] != NULL) {  // Vérifier que les éléments sont valides
+                if ((arbre[j]->occurence) > (arbre[j + 1]->occurence)) {
+                    tempp = arbre[j];
+                    arbre[j] = arbre[j + 1];
+                    arbre[j + 1] = tempp;
+                }
+            }
+        }
+    }
+}
