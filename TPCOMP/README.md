@@ -21,6 +21,8 @@ For the compilation process:
 	* Drivers/CMSIS/Device/ST/STM32F4xx/Include
 	* Drivers/CMSIS/Include
 	* Inc
+	
+	
 2. The folder Src/ is sometimes "exclude from build". We need to include it to the compilation process. Right clic on the folder > C/C++ build > Uncheck the box "Exclude from buid".
 
 Your project is ready. You can now compile and flash your MCU.
