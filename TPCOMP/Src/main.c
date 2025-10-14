@@ -18,6 +18,7 @@ int main(void)
 
 	while(1){
 		SYSTICK_Delay(1000);
+		//Fonction de test de hello word
 		GPIOA->ODR ^= 1<<5;
 		printf("Hello\r\n");
 
