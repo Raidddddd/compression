@@ -91,3 +91,4 @@ void AfficherTabArbreHuffman(struct noeud* arbre[256], uint32_t taille)
 
 
 
+
