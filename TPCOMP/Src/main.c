@@ -17,7 +17,7 @@ int main(void) {
     uint32_t tab[256] = {0};
     struct noeud* arbre[256] = {0};  // Initialisation du tableau
 
-    uint8_t chaine[] = "Une banane";
+    uint8_t chaine[] = "aaaabbbccd";
     printf("Hello\r\n");
 
     occurence(chaine, tab);
@@ -39,7 +39,8 @@ int main(void) {
     AfficherTabArbreHuffman(arbre, tailleArbre);
     printf("--------------\r\n");
     racine(arbre,tailleArbre);
-   parcourirArbre(arbre[0]);
+   //parcourirArbre(arbre[0]);
+   //creercode(arbre[0],0,0);
     while(1) {
         SYSTICK_Delay(1000);
         GPIOA->ODR ^= 1 << 5;  // Test

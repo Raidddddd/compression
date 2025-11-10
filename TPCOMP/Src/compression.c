@@ -105,6 +105,7 @@ struct noeud* racine(struct noeud* arbre[256], uint32_t taille) {
 
 		nbNoeuds--;
 		triArbre(arbre, nbNoeuds);
+		 parcourirArbre(arbre[0]);
 	}
 
 
@@ -120,5 +121,23 @@ void parcourirArbre(struct noeud* ptrNoeud){
 	}
 }
 
+void free_mem(struct noeud* racine){
+	free(racine->droite);
+	free(racine->gauche);
+	free(racine);
 
+}
+void creercode(struct noeud* ptrNoeud,uint32_t code,uint32_t taille){
+
+	if(ptrNoeud->droite==NULL && ptrNoeud->gauche==NULL){
+
+		ptrNoeud->tailleCode=taille;
+		ptrNoeud->code=code;
+		printf("%c\tcode : %ld taille : %ld \r\n ",ptrNoeud->c,ptrNoeud->code,ptrNoeud->tailleCode);
+	}else {
+		creercode(ptrNoeud->droite,code<<1,taille+1);
+		creercode(ptrNoeud->gauche,(code<<1)+1,taille+1);
+	}
+
+}
 
