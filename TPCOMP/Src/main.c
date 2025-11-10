@@ -37,7 +37,9 @@ int main(void) {
     triArbre(arbre, tailleArbre);
     printf("Arbre trié!!!!!\r\n");
     AfficherTabArbreHuffman(arbre, tailleArbre);
-
+    printf("--------------\r\n");
+    racine(arbre,tailleArbre);
+   parcourirArbre(arbre[0]);
     while(1) {
         SYSTICK_Delay(1000);
         GPIOA->ODR ^= 1 << 5;  // Test

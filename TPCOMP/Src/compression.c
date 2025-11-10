@@ -60,31 +60,65 @@ void creerFeuille(struct noeud *arbre[256], uint32_t tab[256]){
 
 
 void AfficherTabArbreHuffman(struct noeud* arbre[256], uint32_t taille) {
-    for (uint16_t i = 0; i < taille; i++) {
-        if (arbre[i] != NULL) {  // Vérifie que le pointeur est valide
-            printf("Nbre d'occurence du char '%c' = %ld \r\n", (char)arbre[i]->c, arbre[i]->occurence);
-        }
-    }
+	for (uint16_t i = 0; i < taille; i++) {
+		if (arbre[i] != NULL) {  // Vérifie que le pointeur est valide
+			printf("Nbre d'occurence du char '%c' = %ld \r\n", (char)arbre[i]->c, arbre[i]->occurence);
+		}
+	}
 }
 
 
 void triArbre(struct noeud* arbre[256], uint32_t taille) {
-    struct noeud *tempp;
-    // Le tri par bulles doit prendre en compte uniquement les éléments valides
-    for (uint32_t i = 0; i < taille - 1; i++) {
-        for (uint32_t j = 0; j < taille - i - 1; j++) {
-            if (arbre[j] != NULL && arbre[j+1] != NULL) {  // Vérifier que les éléments sont valides
-                if ((arbre[j]->occurence) > (arbre[j + 1]->occurence)) {
-                    tempp = arbre[j];
-                    arbre[j] = arbre[j + 1];
-                    arbre[j + 1] = tempp;
-                }
-            }
-        }
-    }
+	struct noeud *tempp;
+	// Le tri par bulles doit prendre en compte uniquement les éléments valides
+	for (uint32_t i = 0; i < taille - 1; i++) {
+		for (uint32_t j = 0; j < taille - i - 1; j++) {
+			if (arbre[j] != NULL && arbre[j+1] != NULL) {  // Vérifier que les éléments sont valides
+				if ((arbre[j]->occurence) > (arbre[j + 1]->occurence)) {
+					tempp = arbre[j];
+					arbre[j] = arbre[j + 1];
+					arbre[j + 1] = tempp;
+				}
+			}
+		}
+	}
 }
-void creenoeud (struct noeud* arbre[256]){
+struct noeud* racine(struct noeud* arbre[256], uint32_t taille) {
+	uint32_t nbNoeuds = taille;
+
+	while (nbNoeuds > 1) {
+		struct noeud* gauche = arbre[0];
+		struct noeud* droite = arbre[1];
+
+		struct noeud *parent = malloc(sizeof(struct noeud));
+
+		parent->c = 0;
+		parent->occurence = gauche->occurence + droite->occurence;
+		parent->gauche = gauche;
+		parent->droite = droite;
+		parent->code = 0;
+		parent->tailleCode = 0;
+
+		arbre[0] = parent;
+
+		arbre[1] = arbre[nbNoeuds - 1];
+
+		nbNoeuds--;
+		triArbre(arbre, nbNoeuds);
+	}
 
 
-
+	return arbre[0];
 }
+void parcourirArbre(struct noeud* ptrNoeud){
+	if(ptrNoeud->droite==NULL && ptrNoeud->gauche==NULL){
+		printf("je suis une feuille \r\n");
+	}else{
+		printf("je suis un noeud \r\n");
+		parcourirArbre(ptrNoeud->droite);
+		parcourirArbre(ptrNoeud->gauche);
+	}
+}
+
+
+
