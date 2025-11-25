@@ -105,7 +105,6 @@ struct noeud* racine(struct noeud* arbre[256], uint32_t taille) {
 
 		nbNoeuds--;
 		triArbre(arbre, nbNoeuds);
-		 parcourirArbre(arbre[0]);
 	}
 
 
@@ -140,4 +139,8 @@ void creercode(struct noeud* ptrNoeud,uint32_t code,uint32_t taille){
 	}
 
 }
+ struct noeud* getAddress(struct noeud* ptrNoeud, uint8_t caractere){
 
+
+
+ }
