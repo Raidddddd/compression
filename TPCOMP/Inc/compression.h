@@ -21,4 +21,6 @@ void triArbre(struct noeud* arbre[256], uint32_t taille);
 struct noeud* racine(struct noeud* arbre[256], uint32_t taille);
 void parcourirArbre(struct noeud* ptrNoeud);
 void creercode(struct noeud* ptrNoeud,uint32_t code,uint32_t taille);
+struct noeud* getAddress(struct noeud* ptrNoeud, uint8_t caractere);
+void compressTexte(void);
 #endif

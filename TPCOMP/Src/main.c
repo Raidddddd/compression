@@ -7,6 +7,7 @@
 #include "timer.h"
 #include "util.h"
 #include "compression.h"
+#include "formatage.h"
 
 int main(void) {
 	FPU_Init();
@@ -15,42 +16,48 @@ int main(void) {
 	SYSTICK_Init();
 
 	uint32_t tab[256] = {0};
-	struct noeud* arbre[256] = {0};  // Initialisation du  tableau
+	struct noeud* arbre[256] = {0};  // Initialisation du tableau
 
+	/*-- Chaine de caractère original --*/
 	uint8_t chaine[] = "aaaabbbccd";
 
-	occurence(chaine, tab);
-	creerFeuille(arbre, tab);
+	occurence(chaine, tab);   // Calcul du nombre d'occurence de notre chaine de caractère
 
-	// Calcul du nombre de feuilles créées
+	creerFeuille(arbre, tab); // Création des feuilles à partir du tableau d'occurence
+
+	/*-- Calcul du nombre de feuilles créées --*/
 	uint16_t tailleArbre = 0;
 	for (uint16_t i = 0; i < 256; i++) {
 		if (arbre[i] != NULL) {
 			tailleArbre++;
 		}
 	}
+	/*--                                     --*/
+
 
 	/*-------------------------------------------------------------| ARBRE AVANT TRI |-------------------------------------------------------------*/
-	printf("\r \n");
-
-	printf("|||-------------------------------||| ARBRE NON TRIE |||-------------------------------||| \r\n");
+	afficherTitreAvecSeparateur("ARBRBE NON TRIE"); // Formatage pour la console
 
 	AfficherTabArbreHuffman(arbre, tailleArbre);
 	printf("|-----------------------------------------------------------------------------------|\r\n");
-	printf("\r \n");
+		printf("\r \n");
+		/*---------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
-	/*-------------------------------------------------------------| ARBRE APRES TRI |-------------------------------------------------------------*/
-	triArbre(arbre, tailleArbre);
-	printf("\r \n");
-	printf("|||-------------------------------||| ARBRE TRIE |||-------------------------------| \r\n");
+		/*-------------------------------------------------------------| ARBRE APRES TRI |-------------------------------------------------------------*/
+			triArbre(arbre, tailleArbre); // Tri de l'arbre de Huffman
 
-	AfficherTabArbreHuffman(arbre, tailleArbre);
-	printf("|-----------------------------------------------------------------------------------|\r\n");
-	printf("\r \n");
+			afficherTitreAvecSeparateur("ARBRE TRIE"); // Formatage pour la console
+
+			AfficherTabArbreHuffman(arbre, tailleArbre);
+			/*---------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
-	racine(arbre,tailleArbre);
+			/*-------------------------------------------------------------| CONSTRUCTION ARBRE DU HUFFMAN FINAL |-------------------------------------------------------------*/
+				racine(arbre,tailleArbre);
+				/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+	struct noeud* test;
+	test = getAddress(arbre[0], 'e');
 
 	while(1) {
 		SYSTICK_Delay(1000);

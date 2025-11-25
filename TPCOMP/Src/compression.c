@@ -16,6 +16,7 @@
 #include "usart.h"
 #include "timer.h"
 #include "util.h"
+#include "formatage.h"
 
 /*-----------------------------------------| Occurence |-----------------------------------------*/
 /* R : Parcours la chaine de caractère pour calculer le nombre d'occurence d'un caractère
@@ -31,7 +32,10 @@ void occurence (uint8_t* chaine , uint32_t tab[256]){
 
 	}
 
+	/*-- Affichage Occurence --*/
+	afficherTitreAvecSeparateur("AFFICHAGE OCCURENCE");
 	afficheOccurence(tab);
+	/*-------------------------*/
 
 }
 /*------------------------------------------------------------------------------------------------*/
@@ -44,8 +48,7 @@ void occurence (uint8_t* chaine , uint32_t tab[256]){
  * S : Vide
  */
 void afficheOccurence (uint32_t tab[256]){
-	printf("\r \n");
-	printf("|-------------------------------| AFFICHAGE OCCURENCE |-------------------------------| \r\n");
+
 	for(uint16_t i=0;i<256;i++){
 		if(tab[i]!=0){
 
@@ -53,9 +56,6 @@ void afficheOccurence (uint32_t tab[256]){
 
 		}
 	}
-	/*------------| SEPARATEUR |------------*/
-	printf("|-----------------------------------------------------------------------------------|\r\n");
-	printf("\r \n");
 
 }
 
@@ -89,28 +89,25 @@ void creerFeuille(struct noeud *arbre[256], uint32_t tab[256]){
 
 
 
-/*-----------------------------------------| Créer une Feuille |-----------------------------------------*/
-/* R :
- * E :
+/*-----------------------------------------| Afficher Tableau de Huffman |-----------------------------------------*/
+/* R : Afficher chaque noeud du tableau
+ * E : Un arbre de type tableau, la taille de notre
  * S : Vide
  */
 void AfficherTabArbreHuffman(struct noeud* arbre[256], uint32_t taille) {
-	printf("|-------------------------------| AFFICHAGE ARBRE DE HUFFMAN |-------------------------------| \r\n");
 
 	for (uint16_t i = 0; i < taille; i++) {
 		if (arbre[i] != NULL) {  //Vérifie que le pointeur est valide
 			printf("Nbre d'occurence du char '%c' = %ld \r\n", (char)arbre[i]->c, arbre[i]->occurence);
 		}
 	}
-	/*------------| SEPARATEUR |------------*/
-
-	printf("|-----------------------------------------------------------------------------------|\r\n");
-	printf("\r \n");
-
 }
+/*--------------------------------------------------------------------------------------------------------*/
 
-/* R : Fait le tri de notre arbre avec un tris à bulle
- * E : Le pointeur vers un arbre, un entier qui est la taille
+
+/*-----------------------------------------| Tri Arbre de Huffman |-----------------------------------------*/
+/* R : Fait le tri de notre arbre selon un ordre croissant avec un tris à bulle
+ * E : Le pointeur vers un arbre, un entier qui est le nombre d'élément à trier
  * S : Vide
  */
 void triArbre(struct noeud* arbre[256], uint32_t taille) {
@@ -129,9 +126,17 @@ void triArbre(struct noeud* arbre[256], uint32_t taille) {
 		}
 	}
 }
+/*--------------------------------------------------------------------------------------------------------*/
+
+/*-----------------------------------------| Racine |-----------------------------------------*/
+/* R : Construit l'arbre de Huffman complet en fusionnant les deux plus petits noeuds jusqu'à obtenir la racine
+ * E : Notre tableau de feuille (ordonnées de préférence)
+ * 	   taille : Un entier qui représente le nombre de feuille initiale de l'arbre entré
+ * S : Retourne le pointeur vers la racine de l'arbre final
+ */
 struct noeud* racine(struct noeud* arbre[256], uint32_t taille) {
 	uint32_t nbNoeuds = taille;
-	printf("|-------------------------------||| PARCOURS ARBRE |||-------------------------------| \r\n");
+	afficherTitreAvecSeparateur("Parcours Arbre");
 
 	while (nbNoeuds > 1) {
 		struct noeud* gauche = arbre[0];
@@ -154,11 +159,16 @@ struct noeud* racine(struct noeud* arbre[256], uint32_t taille) {
 		triArbre(arbre, nbNoeuds);
 		parcourirArbre(arbre[0]);
 	}
-	printf("|-----------------------------------------------------------------------------------|\r\n");
-	printf("\r \n");
 
 	return arbre[0];
 }
+/*--------------------------------------------------------------------------------------------------------*/
+
+/*-----------------------------------------| Parcourir Arbre |-----------------------------------------*/
+/* R : Parcours notre arbre (droite puis gauche) et affiche si le noeud est une feuille ou un noeud interne
+ * E : Pointeur vers un noeud
+ * S : Vide
+ */
 void parcourirArbre(struct noeud* ptrNoeud){
 
 	if(ptrNoeud->droite==NULL && ptrNoeud->gauche==NULL){
@@ -172,13 +182,19 @@ void parcourirArbre(struct noeud* ptrNoeud){
 
 }
 
+
+/*-----------------------------------------| Free Memory |-----------------------------------------*/
+/* R : Libère un noeud et ses deux enfants directs
+ * E : Pointeur vers un noeud
+ * S : Vide
+ */
 void free_mem(struct noeud* racine){
 	free(racine->droite);
 	free(racine->gauche);
 	free(racine);
 
 }
-
+/*--------------------------------------------------------------------------------------------------------*/
 
 void creercode(struct noeud* ptrNoeud,uint32_t code,uint32_t taille){
 
@@ -193,4 +209,30 @@ void creercode(struct noeud* ptrNoeud,uint32_t code,uint32_t taille){
 	}
 
 }
+struct noeud* getAddress(struct noeud* ptrNoeud, uint8_t caractere) {
+    // 1. Cas de base : Arbre vide ou fin de branche
+    if (ptrNoeud == NULL) {
+        return NULL;
+    }
 
+    // 2. Si c'est une feuille (pas d'enfant gauche ni droite)
+    if (ptrNoeud->gauche == NULL && ptrNoeud->droite == NULL) {
+        // On vérifie si c'est le caractère que l'on cherche
+        // (Cast en uint8_t pour comparer proprement avec le paramètre)
+        if ((uint8_t)ptrNoeud->c == caractere) {
+            return ptrNoeud;
+        }
+        return NULL; // C'est une feuille, mais pas la bonne
+    }
+
+    // 3. Si c'est un noeud interne, on cherche récursivement
+
+    // D'abord à gauche
+    struct noeud* resultat = getAddress(ptrNoeud->gauche, caractere);
+    if (resultat != NULL) {
+        return resultat; // Trouvé à gauche !
+    }
+
+    // Sinon, on cherche à droite (et on retourne le résultat, trouvé ou non)
+    return getAddress(ptrNoeud->droite, caractere);
+}
