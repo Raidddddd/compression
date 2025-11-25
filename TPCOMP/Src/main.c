@@ -59,6 +59,8 @@ int main(void) {
 	struct noeud* test;
 	test = getAddress(arbre[0], 'e');
 
+
+
 	while(1) {
 		SYSTICK_Delay(1000);
 		GPIOA->ODR ^= 1 << 5;  // Test

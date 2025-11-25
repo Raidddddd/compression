@@ -1,6 +1,6 @@
 #ifndef COMPRESSION_H_
 #define COMPRESSION_H_
-
+#define TAILLE_MAX_COMPRESS 500
 void occurence (uint8_t* chaine , uint32_t tab[256]);
 struct noeud{
 	uint16_t c;
@@ -22,5 +22,5 @@ struct noeud* racine(struct noeud* arbre[256], uint32_t taille);
 void parcourirArbre(struct noeud* ptrNoeud);
 void creercode(struct noeud* ptrNoeud,uint32_t code,uint32_t taille);
 struct noeud* getAddress(struct noeud* ptrNoeud, uint8_t caractere);
-void compressTexte(void);
+void compresser(uint8_t *texte, struct noeud *racine);
 #endif

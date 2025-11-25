@@ -18,6 +18,7 @@
 #include "util.h"
 #include "formatage.h"
 
+uint8_t texteCompress[TAILLE_MAX_COMPRESS];
 /*-----------------------------------------| Occurence |-----------------------------------------*/
 /* R : Parcours la chaine de caractère pour calculer le nombre d'occurence d'un caractère
  * E : Un pointeur vers une chaine de caractère, un tableau d'entier
@@ -235,4 +236,51 @@ struct noeud* getAddress(struct noeud* ptrNoeud, uint8_t caractere) {
 
     // Sinon, on cherche à droite (et on retourne le résultat, trouvé ou non)
     return getAddress(ptrNoeud->droite, caractere);
+}
+void compresser(uint8_t *texte, struct noeud *racine)
+{
+    uint32_t indexOctet = 0;
+    uint8_t bitPos = 0;
+    uint8_t octetCourant = 0;
+
+    uint32_t i = 0;
+    while (texte[i] != '\0')
+    {
+
+        struct noeud *n = getAddress(racine, texte[i]);
+
+        uint32_t code = n->code;
+        uint32_t taille = n->tailleCode;
+
+
+        for (int b = taille - 1; b >= 0; b--)
+        {
+            uint8_t bit = (code >> b) & 1;
+
+
+            octetCourant |= bit << (7 - bitPos);
+            bitPos++;
+
+
+            if (bitPos == 8)
+            {
+                texteCompress[indexOctet++] = octetCourant;
+
+
+
+                octetCourant = 0;
+                bitPos = 0;
+            }
+        }
+
+        i++;
+    }
+
+
+    if (bitPos != 0)
+    {
+        texteCompress[indexOctet++] = octetCourant;
+    }
+
+    printf("Compression terminée : %lu octets\r\n", indexOctet);
 }
