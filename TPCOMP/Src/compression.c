@@ -3,6 +3,7 @@
  *
  *  Created on: Oct 14, 2025
  *      Author: ABADOU Raid, ALIA Amine
+ *      PROEJT STM32
  */
 #include <stdint.h>
 #include <stm32f446xx.h>
