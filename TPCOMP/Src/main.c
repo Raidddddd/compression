@@ -15,7 +15,7 @@ int main(void) {
 	SYSTICK_Init();
 
 	uint32_t tab[256] = {0};
-	struct noeud* arbre[256] = {0};  // Initialisation du tableau
+	struct noeud* arbre[256] = {0};  // Initialisation du  tableau
 
 	uint8_t chaine[] = "aaaabbbccd";
 
